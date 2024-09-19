@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rene's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="project">
+        <h1>Carmy: One Scale Fits All</h1>
+        <img src="images/carmy.gif" alt="Carmy">
+        <h2>About</h2>
+        <p>
+            Carmy: One Scale Fits All started as a small game jam project during the GMTK Game Jam 2024, with the theme "Built to Scale". 
+            This game is a 2D metroidvania where the main character, Carmy the chameleon, goes on a journey to discover colors. Carmy can walk
+            on walls resisting gravity, stretch his tongue out to swing, and pull itself to different objects. While he does not know how to 
+            change colors yet, picking up scales allows him to change colors, and lets him camouflage into his surroundings, hiding from his
+            predators.
+        </p>
+        <h2>Project Information</h2>
+        <div class="info">
+            <p>Role: Gameplay Programmer</p>
+            <p>Engine: Unity (C#)</p>
+            <P>Time spent: 2 weeks - </P>
+            <p>Team size: 9</p>
+        </div>
+        <h2>Project Details</h2>
+        <p>
+            After the game jam ended, one of the musicians and I decided to continue working on the game to turn it into a larger scale project. Currently
+            we are working on discussing details and the GDD, and since the product from the game jam has buggy movement, I am working on fixing the 
+            movement code. The wall walking mechanic was definitely a challenging one, as the game has to detect when the player can move in the direction
+            the input is in. 
+        </p>
+        <h2>Movement</h2>
+        <div class="video-container">
+            <video width="1000" height=auto controls autoplay loop muted>
+                <source src="videos/carmy-movement.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>Here are the 3 main problems I had to solve for this movement:</p>
+        <ol>
+            <li>Detect if the player can proceed in the input direction</li>
+            <li>Rotate on convex corners</li>
+            <li>Rotate on concave corners</li>
+        </ol>
+        <p>
+            The input stays consistent to the screen, regardless of the character's orientation. Pressing S would make the player 
+            go left, regardless of whether the player is upside down or upright, as long as the character's feet are grounded. To deal with the first problem,
+            I used a downward raycast and calculated the ground normal. Then, I compared the normal vector and the input vector and only allowed movement when
+            they are almost orthogonal. This is because when these vectors are orthogonal, the input vector and the ground are parallelly aligned, meaning that
+            the player is tring to move in a valid direction. 
+        </p>
+        <p>
+            To deal with rotation, I used 2 downward raycasts, one at the front of the body, and one at the back of the body. Using the normals obtained from 
+            the 2 rays, I can calculate the average normal and average intersection position, to which we can apply on the character. The inwardDirectionLeft 
+            and inwardDirectionRight are used to rotate the downward rays towards the center, to deal with convex corners. If the 2 rays were perpendicular to 
+            the ground, one ray would never detect the vertical wall as there is no gravity acting on the character. To combat this, we add a little rotation 
+            to the rays to face the center. One problem that remains is that there is an infinite number of normals at corners, causing the character to jitter 
+            at corners. To prevent this issue, I added a minimum threshold angle that angleDifference must overcome in order for the character to rotate. 
+        </p>
+        <p>
+            For concave corners, we need a way to detect walls that are infront of the character, and rotate the character accordiongly. Note that we only want to
+            rotate the characters when the player desires and should not happen automatically when the player is next to it (e.g. if a wall is on the left of the 
+            player and the player presses up, this should rotate the character 90 degrees clockwise and move the player up the vertical wall). This means that we 
+            want to add a horizontal ray, but only when there is input in that direction. When this horizontal ray detects walls, it will override one of the two
+            downward rays, and rotate the character to align it to wall. 
+        </p>
+
+        <div class="links">
+            <p>Play Carmy: One Scale Fits All
+                <a href="https://studioberry.itch.io/skippy-the-swimmer" target="_blank">
+                    <i class="fa-brands fa-itch-io"></i> itch.io
+                </a> 
+                or checkout the new movement code at
+                <a href="https://github.com/enerko/skippy-the-swimmer" target="_blank">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
