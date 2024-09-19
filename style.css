@@ -216,6 +216,7 @@ nav ul li a:hover::after{
 
 .links {
     margin-top: 30px;
+    margin-bottom: 50px;
 }
 
 ol {
@@ -253,7 +254,7 @@ ol li {
     background-color: #353535;
     padding: 10px;
     margin: 20px 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Courier New', Courier, monospace !important;
     overflow-x: auto;
 }
 
