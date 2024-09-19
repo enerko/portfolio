@@ -54,7 +54,24 @@
             they are almost orthogonal. This is because when these vectors are orthogonal, the input vector and the ground are parallelly aligned, meaning that
             the player is tring to move in a valid direction. 
         </p>
-        <img src="images/code_walk.png" alt="walk">
+        <div class="code-snippet">
+            <pre><code class="cpp">
+        void Walk()
+        { 
+            if (!_isRotating)
+            {
+                Vector2 groundNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
+        
+                if (VectorSimilarity(_input, groundNormal) &lt; similarityThreshold)
+                {
+                    // Allow movement in the input direction
+                    _rb.velocity = _input.normalized * _speed;
+                }
+            }
+            else _rb.velocity = Vector2.zero;
+        }
+            </code></pre>
+        </div>
         <p>
             To deal with rotation, I used 2 downward raycasts, one at the front of the body, and one at the back of the body. Using the normals obtained from 
             the 2 rays, I can calculate the average normal and average intersection position, to which we can apply on the character. The inwardDirectionLeft 
