@@ -5,7 +5,8 @@
 }
 body{
     background: #141414;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
     color: #fff;
 }
 #header{
@@ -251,11 +252,12 @@ ol li {
 }
 
 .code-snippet {
-    background-color: #353535;
+    background-color: #141414;
     padding: 10px;
     margin: 20px 0;
     font-family: 'Courier New', Courier, monospace !important;
     overflow-x: auto;
+    text-align: left;
 }
 
 .code-snippet pre {
