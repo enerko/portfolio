@@ -76,10 +76,6 @@ nav ul li a:hover::after{
     text-align: left;
 }
 
-.work{
-    border-radius: 10px;
-}
-
 .work-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the maximum width */
@@ -272,6 +268,9 @@ ol li {
     background-color: inherit;
 }
 
-.image-container {
-    float: left;
+.image-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Adjust the maximum width */
+    justify-content: center; /* Center the grid items */
+    gap: 30px;
 }
