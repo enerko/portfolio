@@ -270,7 +270,7 @@ ol li {
 
 .image-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Adjust the maximum width */
+    grid-template-columns: repeat(2, minmax(400px, 1fr)); /* Adjust the maximum width */
     justify-content: center; /* Center the grid items */
     gap: 30px;
 }
