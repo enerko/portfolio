@@ -252,7 +252,7 @@ ol li {
 }
 
 .code-snippet {
-    background-color: #141414;
+    background-color: #1d1d1d;
     padding: 10px;
     margin: 20px 0;
     font-family: 'Courier New', Courier, monospace !important;
@@ -270,4 +270,8 @@ ol li {
     color: #ffffff;
     white-space: pre-wrap; 
     background-color: inherit;
+}
+
+.image-container {
+    float: left;
 }
