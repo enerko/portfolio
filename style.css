@@ -259,10 +259,12 @@ ol li {
 
 .code-snippet pre {
     margin: 0;
+    background-color: inherit;
 }
 
 .code-snippet code {
     display: block;
     color: #ffffff;
     white-space: pre-wrap; 
+    background-color: inherit;
 }
