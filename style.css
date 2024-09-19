@@ -15,7 +15,7 @@ body{
     width: 100%;
     height: 10vh;
     position: fixed;
-    background: #141414;
+    background: #1135d8;
     top: 0;
     left: 0;
 }
@@ -185,11 +185,15 @@ nav ul li a:hover::after{
 
 /*-----project page------*/
 .project{
-    margin: 80px auto;
+    
     padding: 10px 20%;
 }
 
-.project img {
+.project-header {
+    margin: 80px auto;
+}
+
+.project-header img {
     width: 100%;
     height: auto;
     display: block;
@@ -235,7 +239,7 @@ ol li {
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .video-container iframe {
@@ -282,6 +286,7 @@ ol li {
 .list-item{
     position: relative;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .list-item img {
