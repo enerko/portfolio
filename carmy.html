@@ -48,12 +48,13 @@
             <li>Rotate on concave corners</li>
         </ol>
         <p>
-            The input stays consistent to the screen, regardless of the character's orientation. Pressing S would make the player 
+            The input stays consistent to the screen, regardless of the character's orientation. Pressing the left input key (A) would make the player 
             go left, regardless of whether the player is upside down or upright, as long as the character's feet are grounded. To deal with the first problem,
             I used a downward raycast and calculated the ground normal. Then, I compared the normal vector and the input vector and only allowed movement when
             they are almost orthogonal. This is because when these vectors are orthogonal, the input vector and the ground are parallelly aligned, meaning that
             the player is tring to move in a valid direction. 
         </p>
+        <img src="images/code_walk.png" alt="walk">
         <p>
             To deal with rotation, I used 2 downward raycasts, one at the front of the body, and one at the back of the body. Using the normals obtained from 
             the 2 rays, I can calculate the average normal and average intersection position, to which we can apply on the character. The inwardDirectionLeft 
@@ -62,6 +63,8 @@
             to the rays to face the center. One problem that remains is that there is an infinite number of normals at corners, causing the character to jitter 
             at corners. To prevent this issue, I added a minimum threshold angle that angleDifference must overcome in order for the character to rotate. 
         </p>
+        <img src="images/code_position_on_ground.png" alt="position on ground">
+        <img src="images/code_double_raycast.png" alt ="double raycast">
         <p>
             For concave corners, we need a way to detect walls that are infront of the character, and rotate the character accordiongly. Note that we only want to
             rotate the characters when the player desires and should not happen automatically when the player is next to it (e.g. if a wall is on the left of the 
@@ -69,6 +72,7 @@
             want to add a horizontal ray, but only when there is input in that direction. When this horizontal ray detects walls, it will override one of the two
             downward rays, and rotate the character to align it to wall. 
         </p>
+        <img src="images/code_override_rays.png" alt="override rays">
 
         <div class="links">
             <p>Play Carmy: One Scale Fits All

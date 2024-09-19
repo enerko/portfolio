@@ -190,6 +190,7 @@ nav ul li a:hover::after{
     height: auto;
     display: block;
     margin: 20px 0; 
+    margin-bottom: 50px;
 }
 
 .project h1, .project h2 {
