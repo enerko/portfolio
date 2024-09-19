@@ -63,20 +63,20 @@
         </p>
         <div class="code-snippet">
             <pre><code class="cpp">
-        void Walk()
-        { 
-            if (!_isRotating)
+    void Walk()
+    { 
+        if (!_isRotating)
+        {
+            Vector2 groundNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
+    
+            if (VectorSimilarity(_input, groundNormal) &lt; similarityThreshold)
             {
-                Vector2 groundNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
-        
-                if (VectorSimilarity(_input, groundNormal) &lt; similarityThreshold)
-                {
-                    // Allow movement in the input direction
-                    _rb.velocity = _input.normalized * _speed;
-                }
+                // Allow movement in the input direction
+                _rb.velocity = _input.normalized * _speed;
             }
-            else _rb.velocity = Vector2.zero;
         }
+        else _rb.velocity = Vector2.zero;
+    }
             </code></pre>
         </div>
         <p>
@@ -87,28 +87,28 @@
         </p>
         <div class="code-snippet">
             <pre><code>
-        bool DoubleRaycastDown()
-        {
-            // Calculate the positions for the left and right rays
-            Vector2 leftRayOrigin = transform.position + _originOffsetY * transform.up + _distanceFromCenter * transform.right;
-            Vector2 rightRayOrigin = transform.position + _originOffsetY * transform.up - _distanceFromCenter * transform.right;
-        
-            // Calculate the inward direction for the rays using rotation
-            Vector2 inwardDirectionLeft = Quaternion.Euler(0, 0, _inwardAngle) * -transform.up;
-            Vector2 inwardDirectionRight = Quaternion.Euler(0, 0, -_inwardAngle) * -transform.up;
-        
-            _leftHitInfo = Physics2D.Raycast(leftRayOrigin, inwardDirectionLeft, _downwardRayLength, _ground);
-            _rightHitInfo = Physics2D.Raycast(rightRayOrigin, inwardDirectionRight, _downwardRayLength, _ground);
-        
-            Debug.DrawRay(leftRayOrigin, inwardDirectionLeft * _downwardRayLength, Color.red);
-            Debug.DrawRay(rightRayOrigin, inwardDirectionRight * _downwardRayLength, Color.blue);
-        
-            // Return true if both rays detect the ground
-            return _leftHitInfo.collider != null && _rightHitInfo.collider != null;
-        }
+    bool DoubleRaycastDown()
+    {
+        // Calculate the positions for the left and right rays
+        Vector2 leftRayOrigin = transform.position + _originOffsetY * transform.up + _distanceFromCenter * transform.right;
+        Vector2 rightRayOrigin = transform.position + _originOffsetY * transform.up - _distanceFromCenter * transform.right;
+    
+        // Calculate the inward direction for the rays using rotation
+        Vector2 inwardDirectionLeft = Quaternion.Euler(0, 0, _inwardAngle) * -transform.up;
+        Vector2 inwardDirectionRight = Quaternion.Euler(0, 0, -_inwardAngle) * -transform.up;
+    
+        _leftHitInfo = Physics2D.Raycast(leftRayOrigin, inwardDirectionLeft, _downwardRayLength, _ground);
+        _rightHitInfo = Physics2D.Raycast(rightRayOrigin, inwardDirectionRight, _downwardRayLength, _ground);
+    
+        Debug.DrawRay(leftRayOrigin, inwardDirectionLeft * _downwardRayLength, Color.red);
+        Debug.DrawRay(rightRayOrigin, inwardDirectionRight * _downwardRayLength, Color.blue);
+    
+        // Return true if both rays detect the ground
+        return _leftHitInfo.collider != null && _rightHitInfo.collider != null;
+    }
             </code></pre>
         </div>
-        <div class="image-list">
+        <div class="work-list">
             <div class="work">
                 <img src="images/carmy-no-angle.png">
                 <p>_inwardAngle = 0</p>
@@ -125,37 +125,37 @@
         </p>
         <div class="code-snippet">
             <pre><code>
-        void PositionOnGround()
+    void PositionOnGround()
+    {
+        // Calculate average normal and average point between the left and right rays
+        Vector2 averageNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
+        Vector2 averagePoint = (_leftHitInfo.point + _rightHitInfo.point) / 2;
+    
+        Debug.DrawLine(averagePoint, averagePoint + averageNormal, Color.green);
+    
+        // Calculate the target rotation based on the average normal
+        Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
+    
+        // If rotating to the top wall, deal separately as the Quaternion(1,0,0,0) is invalid 
+        if (targetRotation == new Quaternion(1, 0, 0, 0))
         {
-            // Calculate average normal and average point between the left and right rays
-            Vector2 averageNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
-            Vector2 averagePoint = (_leftHitInfo.point + _rightHitInfo.point) / 2;
-        
-            Debug.DrawLine(averagePoint, averagePoint + averageNormal, Color.green);
-        
-            // Calculate the target rotation based on the average normal
-            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
-        
-            // If rotating to the top wall, deal separately as the Quaternion(1,0,0,0) is invalid 
-            if (targetRotation == new Quaternion(1, 0, 0, 0))
-            {
-                targetRotation = new Quaternion(0, 0, 1, 0);
-            }
-        
-            // If the angle difference is small, don't rotate (to avoid jittering at the edge of two surfaces
-            // with different slopes, i.e. corners)
-            float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
-            Quaternion finalRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _angularSpeed);
-        
-            if (angleDifference > _minAngle)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
-            }
-            _isRotating = Quaternion.Angle(transform.rotation, finalRotation) > _minAngle;
-        
-            // Move the character to the average position, with the offset applied
-            transform.position = averagePoint + (Vector2)transform.up * _posYOffet;
+            targetRotation = new Quaternion(0, 0, 1, 0);
         }
+    
+        // If the angle difference is small, don't rotate (to avoid jittering at the edge of two surfaces
+        // with different slopes, i.e. corners)
+        float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+        Quaternion finalRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _angularSpeed);
+    
+        if (angleDifference > _minAngle)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
+        }
+        _isRotating = Quaternion.Angle(transform.rotation, finalRotation) > _minAngle;
+    
+        // Move the character to the average position, with the offset applied
+        transform.position = averagePoint + (Vector2)transform.up * _posYOffet;
+    }
             </code></pre>
         </div>
         <p>

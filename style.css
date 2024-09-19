@@ -78,7 +78,7 @@ nav ul li a:hover::after{
 
 .work-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the maximum width */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust the maximum width */
     justify-content: center; /* Center the grid items */
     gap: 30px;
 }
@@ -266,11 +266,4 @@ ol li {
     color: #ffffff;
     white-space: pre-wrap; 
     background-color: inherit;
-}
-
-.image-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(400px, 1fr)); /* Adjust the maximum width */
-    justify-content: center; /* Center the grid items */
-    gap: 30px;
 }
