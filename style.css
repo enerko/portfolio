@@ -16,6 +16,8 @@ body{
     height: 10vh;
     position: fixed;
     background: #141414;
+    top: 0;
+    left: 0;
 }
 
 .container{
@@ -184,7 +186,7 @@ nav ul li a:hover::after{
 /*-----project page------*/
 .project{
     margin: 80px auto;
-    padding: 10px 10%;
+    padding: 10px 20%;
 }
 
 .project img {
