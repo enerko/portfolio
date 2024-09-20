@@ -7,6 +7,9 @@
     <title>Rene's Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="header">
@@ -14,9 +17,9 @@
         <nav>
             <h1>Rene Koike</h1>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Portfolio</a></li>
+                <li><a href="#intro">Home</a></li>
+                <li><a href="#current-projects">Portfolio</a></li>
+                <li><a href="#about">About Me</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
@@ -25,16 +28,23 @@
 
 <!----intro----->
 <div id="intro">
-    <div class="container">
-        <h1>Hi! I'm Rene</h1>
-            <p class="description">
-                Welcome to my portfolio!
-            </p>
+    <img src="images/skippy-banner.png" alt="Background Image">
+    <div class="dark-overlay"></div>
+    <div class="overlay-text">
+        <h1>Hi! I'm Rene Koike</h1>
+        <div id="welcome">
+            <p>Welcome to my portfolio!</p>
+        </div>
+        <div class="button-container"></div>
+            <a href="#current-projects" class="button">Portfolio</a>
+            <a href="#about" class="button">About Me</a>
+            <a href="#resume" class="button">Resume</a>
+        </div>
     </div>
 </div>
 
 <!----portfolio---->
-<div id="current-projects">
+<div id="current-projects"> 
     <div class="container">
         <h1 class="sub-title">Current Projects</h1>
         <div class="work-list">
