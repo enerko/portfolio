@@ -322,7 +322,7 @@ nav ul li a:hover::after {
 }
 
 .project-header {
-    margin: 20px auto;
+    margin-top: 80px;
 }
 
 .project-header img {
