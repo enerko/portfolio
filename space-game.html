@@ -19,9 +19,41 @@
             .catch(error => console.error('Error loading header:', error));
     </script>
     <div class="project">
-        <h1>Space Game</h1>
-        <p>Details</p>
-        <img src="images/skippy-the-wizard.png" alt="Skippy the Wizard">
+        <div class="project-header">
+            <h1>2D Space Game</h1>
+            <img src="images/skippy-the-wizard.png" alt="Skippy the Wizard">
+        </div>
+        <h2>About</h2>
+        <p>
+            This 2D Space Game is a game I am currently developing to learn making a game in C++ with SDL. I followed
+            Sanjay Madhav's "Game Programming in C++" to learn how to set up the project. To first get used to making a game without an 
+            engine, I wanted to start with something simple, and requires no physics. I thought of cloning retro games such as 
+            Space Invaders or Asteroids, but wanted to add my own spin to it. I decided to make a 2D side-scroller space game 
+            where the player's goal is to dodge any comets, lasers, planets and survive as long as possible. So far, I managed to 
+            get the game loop running with a window and a renderer, added a side-scrolling world, input system, bullets, collision 
+            system, health system, UI, and a pause screen. Since I have only built games using Unity, this process taught me a lot 
+            about how game loops work, how to initialize, setup and load objects, render images, process input, and more processes 
+            that are necessary to just make the game work. 
+
+        </p>
+        <div class="info">
+            <h2>Project Info</h2>
+            <p>Role: Gameplay Programmer</p>
+            <p>Engine: SDL (C++)</p>
+            <P>Time spent: 2 weeks -</P>
+            <p>Team size: 1</p>
+        </div>
+        <div class="links">
+            <p>Play Skippy the Wizard at 
+                <a href="https://studioberry.itch.io/skippy-the-wizard" target="_blank">
+                    <i class="fa-brands fa-itch-io"></i> itch.io
+                </a> 
+                or access the code at
+                <a href="https://github.com/enerko/minijam150" target="_blank">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+            </p>
+        </div>
     </div>
     <div id="footer-placeholder"></div>
     <script>
