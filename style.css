@@ -322,15 +322,14 @@ nav ul li a:hover::after {
 }
 
 .project-header {
-    margin: 80px auto;
+    margin: 20px auto;
 }
 
 .project-header img {
     width: 100%;
     height: auto;
     display: block;
-    margin: 20px 0; 
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .project h1, .project h2 {
