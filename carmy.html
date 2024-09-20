@@ -16,7 +16,15 @@
 
 </head>
 <body>
-    <!--#include file="header.html" -->
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
     <div class="project">
         <div class="project-header">
             <h1>Carmy: One Scale Fits All</h1>
@@ -227,16 +235,15 @@
             </p>
         </div>
     </div>
-    <!----contact----->
-    <div id="contact">
-        <nav>
-            <h1>Contact</h1>
-            <ul>
-                <li><i class="fa-solid fa-envelope"></i><a href="#">Email</a></li>
-                <li><i class="fa-brands fa-linkedin"></i><a href="#">LinkedIn</a></li>
-            </ul>
-        </nav>
-    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
     <script>hljs.highlightAll();</script>
 </body>
 </html>

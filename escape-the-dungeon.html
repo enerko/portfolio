@@ -9,7 +9,15 @@
     <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!--#include file="header.html" -->
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
     <div class="project">
         <h1>Escape the Dungeon!</h1>
         <img src="images/escape-the-dungeon.png" alt="Escape the Dungeon!">
@@ -36,15 +44,14 @@
             </a>
         </p>
     </div>
-    <!----contact----->
-    <div id="contact">
-        <nav>
-            <h1>Contact</h1>
-            <ul>
-                <li><i class="fa-solid fa-envelope"></i><a href="#">Email</a></li>
-                <li><i class="fa-brands fa-linkedin"></i><a href="#">LinkedIn</a></li>
-            </ul>
-        </nav>
-    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
 </body>
 </html>
