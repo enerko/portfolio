@@ -39,6 +39,7 @@ nav {
 
 nav h1 a{
     text-decoration: none;
+    color: #bedce5;
 }
 
 nav ul {
@@ -353,6 +354,14 @@ nav ul li a:hover::after {
 .links {
     margin-top: 80px;
     margin-bottom: 50px;
+}
+
+.links a {
+    color: #a79bff; 
+}
+
+.links a:hover {
+    color: #bedce5; 
 }
 
 ol {
