@@ -64,7 +64,12 @@
                 <a href="space-game.html" class="work-link">
                     <div class="image-container">
                         <img src="images/astromaze.png">
+                        <video class="video-hover" autoplay loop muted>
+                            <source src="videos/space-game.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
+                    
                     <div class="text-container">
                         <h3>Space Side-Scroller</h3>
                         <h4>Gameplay Programmer</h4>
@@ -90,7 +95,12 @@
                 <a href="skippy-the-swimmer" class="work-link">
                     <div class="image-container">
                         <img src="images/skippy.jpg">
+                        <video class="video-hover" autoplay loop muted>
+                            <source src="videos/skippy-demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
+                    
                     <div class="text-container">
                         <h3>Skippy the Swimmer</h3>
                         <h4>Team Lead</h4>
@@ -219,5 +229,48 @@
             })
             .catch(error => console.error('Error loading header:', error));
     </script>
+    <script>
+        const workItems = document.querySelectorAll('.work');
+
+        workItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const video = item.querySelector('.video-hover');
+                if (video) {
+                    video.play();
+                }
+            });
+
+            item.addEventListener('mouseleave', () => {
+                const video = item.querySelector('.video-hover');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0; // Reset video to start
+                }
+            });
+        });
+    </script>
+    <script>
+        const iframeWorkItems = document.querySelectorAll('.work');
+    
+        iframeWorkItems.forEach(item => {
+            const iframe = item.querySelector('iframe.video-hover');
+    
+            item.addEventListener('mouseenter', () => {
+                if (iframe) {
+                    iframe.style.display = 'block'; // Ensure it's visible
+                    // Attempt to play the video (if supported by the iframe)
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            });
+    
+            item.addEventListener('mouseleave', () => {
+                if (iframe) {
+                    // Attempt to pause the video (if supported by the iframe)
+                    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+            });
+        });
+    </script>
+    
 </body>
 </html>
