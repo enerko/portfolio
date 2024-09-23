@@ -149,7 +149,7 @@ nav ul li a:hover::after {
 
 .work-list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Adjust the maximum width */
+    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the maximum width */
     justify-content: center; /* Center the grid items */
     gap: 30px;
 }
@@ -207,6 +207,7 @@ nav ul li a:hover::after {
     background-color: #323535;
     padding: 15px 18px;
     color: #bedce5;
+    height: 50%;
 }
 
 .text-container h3 {
@@ -220,7 +221,6 @@ nav ul li a:hover::after {
 
 .text-container p {
     margin-top: 20px;
-    margin-bottom: 20px;
     font-size: 16px;
 }
 
@@ -228,6 +228,7 @@ nav ul li a:hover::after {
     font-size: 14px;
     display: flex;  /* Align icons in one line */
     gap: 10px;      /* Adds space between icons */
+    margin-top: 20px;
 }
 
 .icon-line i {
