@@ -149,7 +149,7 @@ nav ul li a:hover::after {
 
 .work-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the maximum width */
+    grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Adjust the maximum width */
     justify-content: center; /* Center the grid items */
     gap: 30px;
 }
@@ -163,7 +163,7 @@ nav ul li a:hover::after {
 
 .work img {
     width: 100%;
-    height: 350px; /* Set a fixed height for all images */
+    height: 300px; /* Set a fixed height for all images */
     object-fit: cover; /* Crop the image to fit within the fixed height */
     display: block;
 }
@@ -171,7 +171,7 @@ nav ul li a:hover::after {
 .image-container {
     position: relative;
     width: 100%;
-    height: 350px; /* Set a fixed height for the image/video container */
+    height: 300px; /* Set a fixed height for the image/video container */
     overflow: hidden; /* Ensures that the video stays within the container */
 }
 
@@ -204,18 +204,24 @@ nav ul li a:hover::after {
 }
 
 .text-container {
-    background-color: #3a3a3a;
-    padding: 10px 15px;
+    background-color: #323535;
+    padding: 15px 18px;
     color: #bedce5;
 }
 
 .text-container h3 {
-    font-size: 18px;
+    font-size: 22px;
 }
 
+.text-container h4 {
+    font-weight:400;
+}
+
+
 .text-container p {
-    font-size: 14px;
-    margin-bottom: 15px; /* Add space between text and icons */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .icon-line {
@@ -421,7 +427,7 @@ ol li {
 
 .image-list p {
     color:#abaaab;
-    font-size: 12px;
+    font-size: 20px;
     margin-top: 5px;
 }
 
