@@ -12,7 +12,7 @@ body{
 }
 
 .container {
-    padding: 10px 200px;
+    padding: 10px 10%;
     margin-top: 40px;
     margin-bottom: 40px;
 }
@@ -27,7 +27,7 @@ body{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     color: #bedce5;
     box-sizing: border-box;
-    padding: 15px 200px;
+    padding: 15px 10%;
 }
 
 nav {
@@ -79,7 +79,7 @@ nav ul li a:hover::after {
 #intro {
     position: relative;
     display: inline-block;
-    width: 100vw;
+    width: 100%;
     overflow: hidden;
 }
 
@@ -149,6 +149,7 @@ nav ul li a:hover::after {
 
 .work-list {
     display: grid;
+    box-sizing: border-box;
     grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the maximum width */
     justify-content: center; /* Center the grid items */
     gap: 30px;
@@ -240,8 +241,25 @@ nav ul li a:hover::after {
 /* -----about----- */
 #about{
     color: #35423e;
-    padding: 30px 200px;
+    padding: 30px 0%;
+    box-sizing: border-box;
     background-color: #e8f2f5;
+}
+
+.row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    flex-wrap: wrap;
+}
+
+.about-col-1, .about-col-2 {
+    flex: 1; /* Take up equal space for both columns */
+    padding: 10px;
+}
+
+.about-col-1 {
+    max-width: 400px; /* Restrict the size of the image container */
 }
 
 #about h1 {
@@ -257,18 +275,28 @@ nav ul li a:hover::after {
     margin-bottom: 15px;
 }
 
-.about-container {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Center vertically */
-    margin-top: 20px;
-}
-
 .circular-image {
-    width: 300px; /* Set the size of the image */
-    height: 300px; /* Set the size of the image */
+    width: 350px; /* Set the size of the image */
+    height: 350px; /* Set the size of the image */
     border-radius: 50%; /* Make it circular */
     object-fit: cover; /* Ensure the image covers the circle */
-    margin-right: 100px; /* Space between the image and text */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 1200px) {
+    .row {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
+
+    .about-col-1, .about-col-2 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .about-col-1 {
+        margin-bottom: 30px; /* Add some space between image and text */
+    }
 }
 
 /*-----contact------*/
@@ -276,7 +304,7 @@ nav ul li a:hover::after {
     width: 100%;
     background-color: #202c28;
     color: #bedce5;
-    padding: 20px 200px;
+    padding: 20px 10%;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3); /* Shadow at the top of the bar */
     display: flex;
     justify-content: space-between;
@@ -313,7 +341,7 @@ nav ul li a:hover::after {
 
 /*-----project page------*/
 .project{
-    padding: 10px 400px;
+    padding: 10px 20%;
     margin: 0 auto; 
 }
 
