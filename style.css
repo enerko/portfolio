@@ -553,26 +553,37 @@ ol li {
     gap: 30px; 
     width: 100%;
     box-sizing: border-box;
-    height: 350px;
+    margin:30px 0;
 }
 
 .image-list p {
-    color:#abaaab;
+    color: #abaaab;
     font-size: 20px;
     margin-top: 5px;
 }
 
-.list-item{ 
+.list-item { 
     position: relative;
+    flex: 1 1 0; /* Allow the items to grow and shrink */
     min-width: 0;
     min-height: 0;
     overflow: hidden;
 }
 
 .list-item img {
-    width: auto;
-    height: 300px;
-    object-fit: cover;
+    width: 100%; /* Full width of the parent */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100%; /* Prevent exceeding the container height */
+    object-fit: cover; /* Cover the space without distortion */
+    object-position: center; /* Center the image */
     display: block;
     margin-bottom: 2px;
+}
+
+@media (max-width: 800px) { 
+    .project{
+        padding: 10px 10%;
+        margin: 0 auto; 
+        margin-top: 100px;
+    }
 }
