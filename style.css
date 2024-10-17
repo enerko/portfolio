@@ -9,6 +9,7 @@ body{
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
     color: #bedce5;
+    overflow-x: hidden;
 }
 
 .container {
@@ -43,9 +44,9 @@ nav h1 a{
 }
 
 nav ul {
-    padding: 0; /* Remove any default padding */
-    margin: 0; /* Remove any default margin */
-    display: flex; /* Ensure horizontal layout */
+    padding: 0; 
+    margin: 0;
+    display: flex;
 }
 
 nav ul li {
@@ -75,12 +76,38 @@ nav ul li a::after {
 nav ul li a:hover::after {
     width: 100%;
 }
+
+/* Media query for screens less than 800px */
+@media (max-width: 800px) {
+    nav {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start;
+    }
+
+    nav h1 {
+        margin-bottom: 10px; /* Add space between name and list */
+    }
+
+    nav ul {
+        flex-direction: row; /* Ensure links stay in a horizontal row */
+        justify-content: flex-start; /* Align links to the left */
+        width: 100%; /* Make sure it spans full width */
+    }
+
+    nav ul li {
+        margin-left: 0; /* Remove margin from individual list items */
+    }
+}
 /*-----intro------*/
 #intro {
     position: relative;
-    display: inline-block;
-    width: 100%;
-    overflow: hidden;
+    width: 100%; /* Full width of the container */
+    height: 800px; /* Set a fixed height for the banner on larger screens */
+    overflow: hidden; /* Prevent overflow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
 }
 
 #intro h1 {
@@ -90,13 +117,16 @@ nav ul li a:hover::after {
 
 #welcome p{
     font-weight: 300;
-    font-size: 70px;
+    font-size: 50px;
+    line-height: 1.0;
 }
 
 #intro img {
     display: block; 
-    width: 100%;
-    height: auto;
+    width: 100%; /* Make the image span full width */
+    height: 100%;
+    max-height: 100%; /* Ensure the image does not exceed the container height */
+    object-fit: cover; /* Cover the area without stretching */
 }
   
 .dark-overlay {
@@ -138,6 +168,33 @@ nav ul li a:hover::after {
     background-color: #d0e2dc;
     border: 1px solid #d0e2dc; /* White outline */
     color: #202c28;
+}
+
+
+/* Media query for smaller screens */
+@media (max-width: 800px) {
+    #intro {
+        height: 500px; /* Keep height fixed when dimensions are smaller */
+        padding-top: 90px;
+    }
+
+    #intro img {
+        height: 100%; /* Maintain full height */
+    }
+
+    .button {
+        margin-bottom: 5px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .button-container {
+        margin-top: 30px; 
+    }
+    
+    #intro h1 {
+        padding-top: 80px;
+    }
 }
 
 /*-----portfolio------*/
@@ -296,6 +353,10 @@ nav ul li a:hover::after {
 
     .about-col-1 {
         margin-bottom: 30px; /* Add some space between image and text */
+    }
+
+    .circular-image {
+        max-width: 100%;
     }
 }
 
