@@ -597,3 +597,60 @@ ol li {
         margin-top: 90px;
     }
 }
+
+
+/* Container Styling */
+#blog-container {
+    max-width: 800px; /* Restrict width for a centered layout */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add padding around the container */
+    background-color: #fff; /* Optional: Background color */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Blog Post Styling */
+.blog-post {
+    padding: 15px 0; /* Padding between posts */
+}
+
+.blog-post img, video{
+    width: 80%;
+    height: 50%;
+}
+
+.blog-post .post-date {
+    font-size: 14px; /* Smaller font for the date */
+    color: #888; /* Light gray color for the date */
+    margin: 0 0 10px; /* Add space below the date */
+}
+
+.blog-post h2 {
+    margin: 0 0 10px; /* Add space below the title */
+    font-size: 20px;
+    color: #333;
+}
+
+.blog-post p {
+    margin: 0 0 10px; /* Add space below the intro */
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5; /* Increase readability */
+}
+
+.blog-post .read-more {
+    color: #007BFF; /* Highlight link in blue */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.blog-post .read-more:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Separator Styling */
+hr {
+    border: 0;
+    border-top: 1px solid #ddd; /* Thin gray line */
+    margin: 10px 0; /* Spacing above and below the line */
+}

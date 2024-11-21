@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rene's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+<!----blog entry----->
+<div class="project">
+    <h2>Carmy #1: Implementing wall-climbing mechanics</h2>
+        <div class="video-container">
+            <video controls autoplay loop muted>
+                <source src="videos/carmy-movement.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>The key difference Carmy has with any other metroidvania or platformers is the wall-climbing 
+            mechanics. This will be fundamental to the game, and hence it is crucial that I implement this 
+            correctly. However, this was completely unique from any movement mechanics I've implemented 
+            previously, and it took me many trials and errors until I came up with a solution. 
+        </p>
+        <p>Here were the 3 main problems I had to solve for this movement:</p>
+        <ol>
+            <li>Detect if the player can proceed in the input direction</li>
+            <li>Rotate on convex corners</li>
+            <li>Rotate on concave corners</li>
+        </ol>
+        <p>
+            The input stays consistent to the screen, regardless of the character's orientation. Pressing the left input key (A) would make the player 
+            go left, regardless of whether the player is upside down or upright, as long as the character's feet are grounded. To deal with the first problem,
+            I used a downward raycast and calculated the ground normal. Then, I compared the normal vector and the input vector and only allowed movement when
+            they are almost orthogonal. This is because when these vectors are orthogonal, the input vector and the ground are parallelly aligned, meaning that
+            the player is tring to move in a valid direction. 
+        </p>
+        <div class="code-snippet">
+            <pre><code class="cpp">
+    void Walk()
+    { 
+        if (!_isRotating)
+        {
+            Vector2 groundNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
+    
+            if (VectorSimilarity(_input, groundNormal) &lt; similarityThreshold)
+            {
+                // Allow movement in the input direction
+                _rb.velocity = _input.normalized * _speed;
+            }
+        }
+        else _rb.velocity = Vector2.zero;
+    }
+            </code></pre>
+        </div>
+        <p>
+            To deal with rotation, I used 2 downward raycasts, one at the front of the body, and one at the back of the body. The variables inwardDirectionLeft 
+            and inwardDirectionRight are used to rotate the downward rays towards the center, to deal with convex corners. If the 2 rays were perpendicular to 
+            the ground, one ray would never detect the vertical wall as there is no gravity acting on the character. To combat this, we add a little rotation 
+            to the rays to face the center. 
+        </p>
+        <div class="code-snippet">
+            <pre><code>
+    bool DoubleRaycastDown()
+    {
+        // Calculate the positions for the left and right rays
+        Vector2 leftRayOrigin = transform.position + _originOffsetY * transform.up + _distanceFromCenter * transform.right;
+        Vector2 rightRayOrigin = transform.position + _originOffsetY * transform.up - _distanceFromCenter * transform.right;
+    
+        // Calculate the inward direction for the rays using rotation
+        Vector2 inwardDirectionLeft = Quaternion.Euler(0, 0, _inwardAngle) * -transform.up;
+        Vector2 inwardDirectionRight = Quaternion.Euler(0, 0, -_inwardAngle) * -transform.up;
+    
+        _leftHitInfo = Physics2D.Raycast(leftRayOrigin, inwardDirectionLeft, _downwardRayLength, _ground);
+        _rightHitInfo = Physics2D.Raycast(rightRayOrigin, inwardDirectionRight, _downwardRayLength, _ground);
+    
+        Debug.DrawRay(leftRayOrigin, inwardDirectionLeft * _downwardRayLength, Color.red);
+        Debug.DrawRay(rightRayOrigin, inwardDirectionRight * _downwardRayLength, Color.blue);
+    
+        // Return true if both rays detect the ground
+        return _leftHitInfo.collider != null && _rightHitInfo.collider != null;
+    }
+            </code></pre>
+        </div>
+        <div class="image-list">
+            <div class="list-item">
+                <img src="images/carmy-no-angle.png">
+                <p>_inwardAngle = 0</p>
+            </div>
+            <div class="list-item">
+                <img src="images/carmy-angle.png">
+                <p>_inwardAngle = -10</p>
+            </div>
+        </div>
+        <p>
+            Using the normals obtained from the 2 rays, we can calculate the average normal and average intersection position, to which we can apply on the 
+            character. One problem that remains the infinite number of normals at corners, causing the character to jitter and stop moving. To solve this 
+            issue, I added a minimum threshold angle that angleDifference must overcome in order for the character to rotate. 
+        </p>
+        <div class="code-snippet">
+            <pre><code>
+    void PositionOnGround()
+    {
+        // Calculate average normal and average point between the left and right rays
+        Vector2 averageNormal = (_leftHitInfo.normal + _rightHitInfo.normal) / 2;
+        Vector2 averagePoint = (_leftHitInfo.point + _rightHitInfo.point) / 2;
+    
+        Debug.DrawLine(averagePoint, averagePoint + averageNormal, Color.green);
+    
+        // Calculate the target rotation based on the average normal
+        Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, averageNormal);
+    
+        // If rotating to the top wall, deal separately as the Quaternion(1,0,0,0) is invalid 
+        if (targetRotation == new Quaternion(1, 0, 0, 0))
+        {
+            targetRotation = new Quaternion(0, 0, 1, 0);
+        }
+    
+        // If the angle difference is small, don't rotate (to avoid jittering at the edge of two surfaces
+        // with different slopes, i.e. corners)
+        float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+        Quaternion finalRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _angularSpeed);
+    
+        if (angleDifference > _minAngle)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, finalRotation.eulerAngles.z);
+        }
+        _isRotating = Quaternion.Angle(transform.rotation, finalRotation) > _minAngle;
+    
+        // Move the character to the average position, with the offset applied
+        transform.position = averagePoint + (Vector2)transform.up * _posYOffet;
+    }
+            </code></pre>
+        </div>
+        <p>
+            For concave corners, we need a way to detect walls that are infront of the character, and rotate the character accordiongly. Note that we only want to
+            rotate the characters when the player desires and should not happen automatically when the player is next to it (e.g. if a wall is on the left of the 
+            player and the player presses up, this should rotate the character 90 degrees clockwise and move the player up the vertical wall). This means that we 
+            want to add a horizontal ray, but only when there is input in that direction. When this horizontal ray detects walls, it will override one of the two
+            downward rays, and rotate the character to align it to wall. 
+        </p>
+        <div class="code-snippet">
+            <pre><code>
+                
+    void OverrideRays()
+    {
+        // Shoot a horizontal ray in the direction that the player is moving towards
+        // If ray intersects with a wall, override the left/right downward ray
+
+        // If moving towards player's left
+        if (VectorSimilarity(_input, -transform.right) > similarityThreshold)
+        {
+
+            RaycastHit2D overrideLeftHitInfo;
+            Vector2 overrideLeftRayOrigin = (Vector2)transform.position + _originOffsetY * (Vector2)transform.up 
+                - _originOffsetX * (Vector2)transform.right;
+
+            overrideLeftHitInfo = Physics2D.Raycast(overrideLeftRayOrigin, -transform.right, _horizontalRayLength, _ground);
+            Debug.DrawRay(overrideLeftRayOrigin, _horizontalRayLength * -transform.right, Color.black);
+
+            if (overrideLeftHitInfo.collider != null)
+            {
+                _leftHitInfo = overrideLeftHitInfo;
+            }
+        }
+
+        // If moving towards player's right
+        else if (VectorSimilarity(_input, transform.right) > similarityThreshold)
+        {
+            RaycastHit2D overrideRightHitInfo;
+            Vector2 overrideRightRayOrigin = (Vector2)transform.position + _originOffsetY * (Vector2)transform.up + _originOffsetX 
+                * (Vector2)transform.right;
+
+            overrideRightHitInfo = Physics2D.Raycast(overrideRightRayOrigin, transform.right, _horizontalRayLength, _ground);
+            Debug.DrawRay(overrideRightRayOrigin, _horizontalRayLength * transform.right, Color.black);
+
+            if (overrideRightHitInfo.collider != null)
+            {
+                _rightHitInfo = overrideRightHitInfo;
+            }
+        }
+    }
+            </code></pre>
+        </div>
+        <p>
+            This movement code is still being tweaked, and has not been added to the project yet. However, you can check out the project made during the game jam 
+            and see the new movement code in the following links.
+        </p>
+        <div class="links">
+            <p>Play Carmy: One Scale Fits All
+                <a href="https://studioberry.itch.io/skippy-the-swimmer" target="_blank">
+                    itch.io <i class="fa-solid fa-up-right-from-square"></i>
+                </a> 
+                or check out the new movement code at
+                <a href="https://github.com/enerko/skippy-the-swimmer" target="_blank">
+                    GitHub <i class="fa-solid fa-up-right-from-square"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+    <script>hljs.highlightAll();</script>
+</body>
