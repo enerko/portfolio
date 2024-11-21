@@ -606,6 +606,7 @@ ol li {
     padding: 20px; /* Add padding around the container */
     background-color: #fff; /* Optional: Background color */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-top: 80px; /* Space to prevent it from hiding under the header */
 }
 
 /* Blog Post Styling */
