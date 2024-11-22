@@ -481,6 +481,12 @@ nav ul li a:hover::after {
     line-height: 1.6; 
 }
 
+.project .post-date {
+    font-size: 14px; /* Smaller font for the date */
+    color: #888; /* Light gray color for the date */
+    margin: 0 0 10px; /* Add space below the date */
+}
+
 .links {
     margin-top: 80px;
     margin-bottom: 50px;

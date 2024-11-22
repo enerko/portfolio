@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rene's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+<!----blog entry----->
+<div class="project">
+    <h2>Carmy #2: Updated wall-climbing and new procedural animation</h2>
+    <p class="post-date">November 21, 2024</p>
+        <div class="video-container">
+            <video controls autoplay loop muted>
+                <source src="videos/carmy-wall-climb.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>
+            Although the previous wall-climbing implementation worked well in most cases, there were areas 
+            where the character gets stuck or starts heading to an unwanted direction. I also didn't like the
+            fact that it was handled differently in each case - convex, concave, and flat surfaces. So I spent some
+            time thinking how I could handle them altogether, when an idea came across my mind.
+        </p>
+        <div class="image-list">
+            <div class="list-item">
+                <img src="images/concave.png">
+                <p>Concave corner</p>
+            </div>
+            <div class="list-item">
+                <img src="images/convex.png">
+                <p>Convex corner</p>
+            </div>
+        </div>
+        <p> 
+            Instead of using straight lines, using an arc-like raycasting would allow us to detect both 
+            concave and convex corners. We can set the player 
+            rotation to the normal vector that is detected by this arc-like raycast. We want to draw the raycast so 
+            that it starts from above the player and extends an arc downwards, until it hits the ground. When it hits the ground,
+            we can set the target rotation and position according to this collision and apply it to the player gradually.
+
+        </p>
+       
+        <p>
+            Since Unity does not have a raycast that draws an arc, I implemented a function called ArcCast that draws an arc
+            by using several line raycasts. 
+        </p>
+        <div class="code-snippet">
+            <pre><code class="cpp">
+    public static class Physics2DExtensions
+    {
+        private static float _radiusScalar = 0.7f;
+        public static RaycastHit2D ArcCast(Vector2 center, Quaternion rotation, float angle, float radius, int resolution, LayerMask layer)
+        {
+            RaycastHit2D hit = new RaycastHit2D();
+    
+            float directionMultiplier = Mathf.Sign(radius);
+    
+            rotation *= Quaternion.Euler(0, 0, directionMultiplier * angle / 2);
+            for (int i = 0; i <= resolution; i++) // For each segment
+            {
+                Vector2 v1 = center + (Vector2)(rotation * Vector2.right * radius * _radiusScalar); // Position of the starting point of the segment
+                rotation *= Quaternion.Euler(0, 0, - directionMultiplier * angle / resolution);
+                Vector2 v2 = center + (Vector2)(rotation * Vector2.right * radius * _radiusScalar); // Position of the ending point of the segment
+                Vector2 direction = v2 - v1; 
+    
+                hit = Physics2D.Raycast(v1, direction, direction.magnitude * 1.001f, layer);
+    
+                if (hit.collider != null) return hit;
+            }
+    
+            return hit;
+        }
+    }
+            </code></pre>
+        </div>
+        <p>
+            Then, using this function, I calculated the target position and rotation of the player. This code works
+            for corners, as well as flat surfaces, which allowed me to simplify the wall climbing code from over 300 lines to under a 100.
+        </p>
+        <div class="code-snippet">
+            <pre><code>
+    RaycastHit2D hit = Physics2DExtensions.ArcCast(transform.position, transform.rotation, _angle, _radius, _segments, _groundLayer);
+
+    if (hit.collider != null && Mathf.Abs(_radius) > 0.9f)
+    {
+        // Move to new position
+        transform.position = Vector2.Lerp(transform.position, hit.point + hit.normal.normalized * _posYOffset, Time.deltaTime * _moveSpeed);
+
+        // Rotate 
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+
+    }
+            </code></pre>
+        </div>
+        <p>
+            Now that we got the wall-climbing mechanics done, we move onto the procedural animation. I wanted the character
+            to move smoothly like a snake, as it makes walking around feel fun and satisfying. I created game objects with 2D shape
+            sprites and attached the following script on each of them. Each of these game objects represent a part of the player's
+            body. The variable _followDistance ensures that each part moves closer to the part in front of it if it's too far away. 
+            At the same time, it rotates smoothly to face the direction it's moving. 
+        </p>
+        <div class="code-snippet">
+            <pre><code>
+    public class FollowTarget : MonoBehaviour
+    {
+        [SerializeField] private Transform _followTarget;
+        [SerializeField] private float _followSpeed = 5f;
+        [SerializeField] private float _followDistance = 0.5f;
+    
+        void Update()
+        {
+            // Calculate the direction to move
+            Vector2 direction = (Vector2)_followTarget.position - (Vector2)transform.position;
+    
+            // Maintain the follow distance
+            if (direction.magnitude > _followDistance)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, _followTarget.position, _followSpeed * Time.deltaTime);
+            }
+    
+            // Rotate object
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 180;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _followSpeed * Time.deltaTime);
+    
+        }
+    }
+            </code></pre>
+        </div>
+        <p>
+            For each of the body part, I assign the part in front of it under the variable, _followTarget, to create a chain. If we 
+            call each of them part1, part2, part3, ... then part2 follows part1, part3 follows part2, and so on. Repeating
+            this process, we obtain a snake-like movement. 
+        </p>
+        <div class="links">
+            <p>
+                <a href="https://github.com/enerko/carmy-wall-climb" target="_blank">
+                    Check out the code from this blog post here <i class="fa-solid fa-up-right-from-square"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+    <script>hljs.highlightAll();</script>
+</body>
