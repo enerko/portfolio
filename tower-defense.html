@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rene's Portfolio | Mars Tower Defense</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/0da014134c.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+    <div class="project">
+        <div class="project-header">
+            <h1>Mars Tower Defense</h1>
+            <div class="video-container">
+                <iframe src="https://drive.google.com/file/d/1tzqU8S9LDYsrjJqSqhzZPPgIqUKlIa5T/preview" width="1000" allow="autoplay"></iframe>
+            </div>
+        </div>
+        <h2>About</h2>
+        <p>
+            <i>Mars Tower Defense</i> is a grid-based tower defense game where the player must defend the base from waves of robot enemies.
+        </p>
+        <h2>Responsibilities</h2>
+        <p>
+            - Built tools for artists
+            - Grid system
+            - Buying, building, deleting turrets 
+            - Enemy management with object pooling
+            - Integrating art, music, and vfx
+        </p>
+        <div class="tab-container">
+            <div class="tabs">
+              <button class="tab active" data-target="image">Image/GIF</button>
+              <button class="tab" data-target="code">Code Snippet</button>
+            </div>
+          
+            <div class="tab-content" id="image">
+              <div class="image-section">
+                <img src="your-gif.gif" alt="Demo GIF" />
+                <div class="description">
+                  <h3>gif</h3>
+                  <p>gif desc</p>
+                </div>
+              </div>
+            </div>
+          
+            <div class="tab-content hidden" id="code">
+              <pre><code>
+          function greet(name) {
+            return `Hello, ${name}!`;
+          }
+              </code></pre>
+            </div>
+        </div>
+        <div class="image-list">
+            <div class="list-item">
+                <img src="images/skippy-before.png">
+                <p>Horizotal stamina bar in v0.3</p>
+            </div>
+            <div class="list-item">
+                <img src="images/skippy-after.png">
+                <p>Circular stamina bar in v1.3</p>
+            </div>
+        </div>
+
+        <div class="links">
+            <p>Download and play Skippy the Swimmer at
+                <a href="https://studioberry.itch.io/skippy-the-swimmer" target="_blank">
+                    itch.io <i class="fa-solid fa-up-right-from-square"></i>
+                </a> 
+                or access the code at
+                <a href="https://github.com/enerko/skippy-the-swimmer" target="_blank">
+                    GitHub <i class="fa-solid fa-up-right-from-square"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.tab-content');
+    
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Hide all content
+                contents.forEach(c => c.classList.add('hidden'));
+    
+                // Add active class to clicked tab
+                tab.classList.add('active');
+    
+                // Show related content
+                const targetId = tab.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                }
+            });
+        });
+    </script>    
+</body>
+</html>
